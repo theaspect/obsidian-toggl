@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 1 plan
 
 Plans:
-- [ ] 01-01-PLAN.md — Build tooling, plugin skeleton, and compilation verification
+- [x] 01-01-PLAN.md — Build tooling, plugin skeleton, and compilation verification
 
 ### Phase 2: Settings
 **Goal**: Users can configure all plugin options — API token, output format, columns, and delimiter — and those settings persist across Obsidian restarts
