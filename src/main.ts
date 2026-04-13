@@ -12,6 +12,7 @@ export interface TogglImportSettings {
 		project: boolean;
 	};
 	delimiter: string;
+	workspaceId: number;
 }
 
 export const DEFAULT_SETTINGS: TogglImportSettings = {
@@ -25,6 +26,7 @@ export const DEFAULT_SETTINGS: TogglImportSettings = {
 		project: false,
 	},
 	delimiter: '|',
+	workspaceId: 0,
 };
 
 export default class TogglImportPlugin extends Plugin {
