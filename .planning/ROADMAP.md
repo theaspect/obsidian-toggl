@@ -46,8 +46,11 @@ Plans:
   3. User can switch between Markdown table and plain text output formats
   4. User can enable or disable any combination of columns: description, start time, duration, tags, project
   5. User can set a custom delimiter for plain text format (default is pipe `|`)
-**Plans**: TBD
+**Plans:** 1 plan
 **UI hint**: yes
+
+Plans:
+- [ ] 02-01-PLAN.md — Settings tab UI with token, format, delimiter, and column toggles
 
 ### Phase 3: API Client
 **Goal**: The plugin can fetch correctly scoped time entries from Toggl for a given local date, filter out running entries, and resolve project names
@@ -97,12 +100,12 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Scaffolding | 0/1 | Planning complete | - |
-| 2. Settings | 0/? | Not started | - |
+| 2. Settings | 0/1 | Planning complete | - |
 | 3. API Client | 0/? | Not started | - |
 | 4. Formatter | 0/? | Not started | - |
 | 5. Command | 0/? | Not started | - |
