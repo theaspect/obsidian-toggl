@@ -31,7 +31,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. `manifest.json` contains a unique plugin id, valid `minAppVersion`, and `isDesktopOnly: true`
   4. `requestUrl` is used as the HTTP abstraction (no native fetch calls exist in the codebase)
   5. `DEFAULT_SETTINGS` merge pattern is in place so new settings fields never break existing installs
-**Plans**: TBD
+**Plans:** 1 plan
+
+Plans:
+- [ ] 01-01-PLAN.md — Build tooling, plugin skeleton, and compilation verification
 
 ### Phase 2: Settings
 **Goal**: Users can configure all plugin options — API token, output format, columns, and delimiter — and those settings persist across Obsidian restarts
@@ -98,7 +101,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Scaffolding | 0/? | Not started | - |
+| 1. Scaffolding | 0/1 | Planning complete | - |
 | 2. Settings | 0/? | Not started | - |
 | 3. API Client | 0/? | Not started | - |
 | 4. Formatter | 0/? | Not started | - |
