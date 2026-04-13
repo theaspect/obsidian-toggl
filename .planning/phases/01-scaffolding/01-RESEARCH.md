@@ -453,17 +453,17 @@ async function verifyToken(token: string): Promise<boolean> {
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Plugin ID uniqueness**
    - What we know: The id `"obsidian-toggl-import"` is not found in a casual search of community plugins
    - What's unclear: Whether it is taken in the official community-plugins.json registry
-   - Recommendation: Verify against `github.com/obsidianmd/obsidian-releases/blob/master/community-plugins.json` before finalizing; scaffolding can proceed with a provisional id
+   - **Decision (2026-04-09):** Proceed with `"obsidian-toggl-import"` as the provisional id. Scaffolding does not require publishing; uniqueness must be verified against `github.com/obsidianmd/obsidian-releases/blob/master/community-plugins.json` before Phase 6 (Release). This is not a Phase 1 blocker.
 
 2. **ESLint integration in Phase 1**
    - What we know: The current sample plugin includes `eslint-plugin-obsidianmd` and an eslint.config.js
    - What's unclear: Whether Phase 1 should include ESLint setup or defer to a later phase
-   - Recommendation: Include ESLint with `eslint-plugin-obsidianmd` in Phase 1 — it enforces `requestUrl` which is a Phase 1 success criterion; catching violations at lint time is better than discovering them at PR review
+   - **Decision (2026-04-09):** Skip ESLint in Phase 1. The `requestUrl` constraint is enforced via grep in the build verification task (`grep -r "globalThis\.fetch\|window\.fetch" src/`) and via `acceptance_criteria` in the plan. ESLint can be added in a future phase if lint tooling becomes a priority. The grep-based check is sufficient for Phase 1 scope.
 
 ---
 
