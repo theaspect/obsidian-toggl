@@ -1,4 +1,6 @@
-import { Plugin } from 'obsidian';
+import { Plugin, Editor, Notice } from 'obsidian';
+import { fetchTimeEntries, TimeEntry } from './api';
+import { formatEntries } from './formatter';
 import { TogglImportSettingTab } from './settings';
 
 export interface TogglImportSettings {
@@ -35,7 +37,44 @@ export default class TogglImportPlugin extends Plugin {
 	async onload(): Promise<void> {
 		await this.loadSettings();
 		this.addSettingTab(new TogglImportSettingTab(this.app, this));
-		// Phase 5: register import command
+		this.addCommand({
+			id: 'import-toggl-entries',
+			name: 'Import Toggl Entries',
+			editorCallback: async (editor: Editor) => {
+				// D-04: Empty token guard — fail fast before any network call
+				if (this.settings.apiToken === '') {
+					new Notice('Configure your Toggl API token in Settings \u2192 Toggl Import first.');
+					return;
+				}
+
+				// D-07: Date validation from active file basename
+				const basename = this.app.workspace.getActiveFile()?.basename ?? '';
+				if (!/^\d{4}-\d{2}-\d{2}$/.test(basename)) {
+					new Notice('Active note filename is not a valid date (expected yyyy-mm-dd).');
+					return;
+				}
+
+				// D-05: Fetch with structured error handling
+				let entries: TimeEntry[];
+				try {
+					entries = await fetchTimeEntries(this, basename);
+				} catch (err: unknown) {
+					new Notice(err instanceof Error ? err.message : 'Toggl API error: unknown error');
+					return;
+				}
+
+				// D-06: Empty result short-circuit (no insert)
+				const formatted = formatEntries(entries, this.settings);
+				if (formatted === '') {
+					new Notice('No entries found for this date.');
+					return;
+				}
+
+				// D-01 / D-02 / D-03: Insert at cursor with trailing newline + success notice
+				editor.replaceSelection(formatted + '\n');
+				new Notice(`Imported ${entries.length} entries`);
+			},
+		});
 	}
 
 	onunload(): void {}
@@ -44,6 +83,7 @@ export default class TogglImportPlugin extends Plugin {
 		this.settings = Object.assign(
 			{},
 			DEFAULT_SETTINGS,
+			this.settings ?? {},
 			await this.loadData()
 		);
 	}
