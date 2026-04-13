@@ -1,0 +1,101 @@
+# Requirements: Obsidian Toggl Import Plugin
+
+**Defined:** 2026-04-09
+**Core Value:** One command pulls the day's Toggl entries into your daily note, formatted exactly how you want them.
+
+## v1 Requirements
+
+### Settings
+
+- [ ] **SET-01**: User can enter a Toggl API token in plugin settings
+- [ ] **SET-02**: Settings display a warning that the API token is stored in `data.json` (included in Obsidian Sync)
+- [ ] **SET-03**: User can select output format: Markdown table or plain text
+- [ ] **SET-04**: User can select which columns to include: description, start time, duration, tags, project (any combination)
+- [ ] **SET-05**: User can set a custom delimiter for plain text format (default: pipe `|`)
+
+### Import Command
+
+- [ ] **CMD-01**: Plugin registers an "Import Toggl Entries" command in the command palette
+- [ ] **CMD-02**: Command reads the active note's filename as the date (yyyy-mm-dd format)
+- [ ] **CMD-03**: Command shows an error notice if the active note filename is not a valid yyyy-mm-dd date
+- [ ] **CMD-04**: Command fetches time entries from Toggl API for that date using the configured API token
+- [ ] **CMD-05**: Command shows an error notice for API failures (invalid token, network error, rate limit)
+- [ ] **CMD-06**: Command shows a notice when no entries exist for that date
+- [ ] **CMD-07**: Fetched entries are inserted at the cursor position in the active note
+- [ ] **CMD-08**: Running entries (active timers) are silently skipped — not inserted
+
+### Output Format
+
+- [ ] **FMT-01**: Markdown table format renders a GFM table with the configured columns as headers
+- [ ] **FMT-02**: Plain text format renders one entry per line, columns joined by the configured delimiter
+- [ ] **FMT-03**: Duration is displayed as human-readable format (e.g. `1h 23m`)
+- [ ] **FMT-04**: Start time is displayed in the user's local timezone (converted from UTC)
+- [ ] **FMT-05**: Tags column renders as a comma-separated list when an entry has multiple tags
+
+### Re-import
+
+- [ ] **REIMP-01**: Running the command on a note that already has imported data appends new entries rather than replacing existing content
+
+### Build & Release
+
+- [ ] **REL-01**: Plugin builds to a single `main.js` via esbuild
+- [ ] **REL-02**: `manifest.json` is correctly structured with a unique plugin id, `minAppVersion`, and `isDesktopOnly: true`
+- [ ] **REL-03**: GitHub Actions workflow publishes `main.js`, `manifest.json`, and `styles.css` as release assets on git tag
+
+## v2 Requirements
+
+### Column Ordering
+
+- **COL-01**: User can reorder columns via drag-and-drop in settings
+
+### Additional Columns
+
+- **COL-02**: User can include project color in output
+- **COL-03**: User can include end time as a column
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| Date picker | Active note filename is the date source |
+| Auto-import on note open | Creates duplicates; silent background API calls |
+| Workspace selection | Use default workspace; single-user scope |
+| Per-note format override | Global setting only |
+| Mobile support | Electron-specific; `isDesktopOnly: true` from day one |
+| Bidirectional sync | Fundamentally different product |
+
+## Traceability
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| SET-01 | Phase 2 | Pending |
+| SET-02 | Phase 2 | Pending |
+| SET-03 | Phase 2 | Pending |
+| SET-04 | Phase 2 | Pending |
+| SET-05 | Phase 2 | Pending |
+| CMD-01 | Phase 5 | Pending |
+| CMD-02 | Phase 5 | Pending |
+| CMD-03 | Phase 5 | Pending |
+| CMD-04 | Phase 5 | Pending |
+| CMD-05 | Phase 5 | Pending |
+| CMD-06 | Phase 5 | Pending |
+| CMD-07 | Phase 5 | Pending |
+| CMD-08 | Phase 3 | Pending |
+| FMT-01 | Phase 4 | Pending |
+| FMT-02 | Phase 4 | Pending |
+| FMT-03 | Phase 4 | Pending |
+| FMT-04 | Phase 3 | Pending |
+| FMT-05 | Phase 4 | Pending |
+| REIMP-01 | Phase 5 | Pending |
+| REL-01 | Phase 1 | Pending |
+| REL-02 | Phase 1 | Pending |
+| REL-03 | Phase 6 | Pending |
+
+**Coverage:**
+- v1 requirements: 22 total
+- Mapped to phases: 22
+- Unmapped: 0 ✓
+
+---
+*Requirements defined: 2026-04-09*
+*Last updated: 2026-04-09 after initial definition*
