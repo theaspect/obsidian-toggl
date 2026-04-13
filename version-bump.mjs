@@ -5,6 +5,10 @@
 import { readFileSync, writeFileSync } from "fs";
 
 const targetVersion = process.env.npm_package_version;
+if (!targetVersion) {
+	console.error("Error: npm_package_version is not set. Run this script via `npm version`, not directly.");
+	process.exit(1);
+}
 
 // read minAppVersion from manifest.json and bump version to target version
 const manifest = JSON.parse(readFileSync("manifest.json", "utf8"));
@@ -20,4 +24,6 @@ const versions = JSON.parse(readFileSync("versions.json", "utf8"));
 if (!versions[targetVersion]) {
 	versions[targetVersion] = minAppVersion;
 	writeFileSync("versions.json", JSON.stringify(versions, null, "\t"));
+} else {
+	console.warn(`versions.json: entry for ${targetVersion} already exists, skipping write.`);
 }
