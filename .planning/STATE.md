@@ -1,38 +1,39 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: MVP
-status: complete
-stopped_at: v1.0 MVP milestone archived — ready for next milestone
-last_updated: "2026-04-13T00:00:00Z"
-last_activity: 2026-04-13
+milestone: v1.1
+milestone_name: Polish & Registry
+status: active
+last_updated: "2026-04-14T00:00:00Z"
+last_activity: 2026-04-14
 progress:
-  total_phases: 6
-  completed_phases: 6
-  total_plans: 8
-  completed_plans: 8
-  percent: 100
+  total_phases: 5
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-13)
+See: .planning/PROJECT.md (updated 2026-04-14)
 
 **Core value:** One command pulls the day's Toggl entries into your daily note, formatted exactly how you want them.
-**Current focus:** Planning next milestone
+**Current focus:** Defining requirements — milestone v1.1 started
 
 ## Current Position
 
-Milestone v1.0 MVP — ARCHIVED
-Status: Ready to begin next milestone
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-14 — Milestone v1.1 Polish & Registry started
 
 ## Accumulated Context
 
 ### Decisions
 
-All decisions logged in PROJECT.md Key Decisions table. Milestone archived to `.planning/milestones/v1.0-ROADMAP.md`.
+All v1.0 decisions logged in PROJECT.md Key Decisions table. Milestone archived to `.planning/milestones/v1.0-ROADMAP.md`.
 
 ### Pending Todos
 
@@ -44,6 +45,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-13
-Stopped at: v1.0 milestone archived — all artifacts committed
-Resume with: `/gsd-new-milestone`
+Last session: 2026-04-14
+Stopped at: v1.1 milestone initialized — requirements and roadmap defined
+Resume with: `/gsd-discuss-phase 7`

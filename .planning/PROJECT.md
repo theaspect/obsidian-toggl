@@ -2,9 +2,20 @@
 
 ## What This Is
 
-An Obsidian plugin that imports Toggl Track time entries into daily notes with a single command. The active note's filename (yyyy-mm-dd) determines the date, entries are fetched from Toggl's API, and the formatted output is inserted at the cursor. Format is fully configurable — markdown table or delimited plain text, both with the same selectable columns.
+An Obsidian plugin that imports Toggl Track time entries into daily notes with a single command. The active note's filename (yyyy-mm-dd) determines the date, entries are fetched from Toggl's API, and the formatted output is inserted at the cursor. Format is fully configurable — markdown table, delimited plain text, or custom template string, all with selectable columns.
 
 Shipped v1.0 MVP (2026-04-13): all core features working end-to-end with 49 passing tests and UAT approval.
+
+## Current Milestone: v1.1 Polish & Registry
+
+**Goal:** Harden the plugin with UX improvements, import reliability, flexible formatting, and ship to the Obsidian community plugin registry.
+
+**Target features:**
+- Fix CI (GitHub Actions Node.js 24, npm peer dep conflict)
+- Test API Key button + SecretStorage for token
+- Entry sorting (ascending by default) + filename prefix date matching
+- Template string format mode (`${description} ${duration}`)
+- README.md and community registry submission
 
 ## Core Value
 
@@ -30,7 +41,17 @@ One command pulls the day's Toggl entries into your daily note, formatted exactl
 
 ### Active
 
-(None — all v1 requirements shipped. New requirements defined when next milestone begins.)
+**v1.1 Polish & Registry**
+
+- [ ] CI-01: GitHub Actions workflow runs on Node.js 24 compatible action versions
+- [ ] CI-02: npm install resolves cleanly in CI (fix @codemirror/state peer dep conflict)
+- [ ] SEC-01: User can test their API token from the settings tab
+- [ ] SEC-02: API token is stored in Obsidian SecretStorage instead of plaintext settings
+- [ ] IMP-01: Imported entries are sorted by start time ascending by default
+- [ ] IMP-02: Date is matched when the note filename starts with a yyyy-mm-dd prefix (e.g. "2026-12-31 Foo Bar")
+- [ ] FMT-01: User can define a custom template string using ${variable} placeholders
+- [ ] REL-01: README.md documents product overview, installation, usage, settings, and build process
+- [ ] REL-02: Plugin meets all Obsidian community registry submission requirements
 
 ### Out of Scope
 
