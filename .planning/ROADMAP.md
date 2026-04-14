@@ -37,7 +37,10 @@
   1. GitHub Actions workflow completes without errors on a clean push to the repository
   2. `npm install` in CI resolves with zero peer dependency warnings or conflicts
   3. The release workflow triggers and attaches assets correctly when a semver tag is pushed
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 07-01-PLAN.md — Pin @codemirror/state and @codemirror/view to obsidian 1.12.3 peer versions (CI-02)
+- [ ] 07-02-PLAN.md — Add ci.yml workflow and bump release.yml to Node.js 24 (CI-01)
 
 ### Phase 8: Settings UX & Security
 **Goal**: Users can verify their API token works and trust it is not stored in plaintext
@@ -93,7 +96,7 @@
 | 4. Formatter | v1.0 | 1/1 | Complete | 2026-04-11 |
 | 5. Command | v1.0 | 2/2 | Complete | 2026-04-13 |
 | 6. Release | v1.0 | 1/1 | Complete | 2026-04-13 |
-| 7. CI Fixes | v1.1 | 0/? | Not started | - |
+| 7. CI Fixes | v1.1 | 0/2 | Planned | - |
 | 8. Settings UX & Security | v1.1 | 0/? | Not started | - |
 | 9. Import Improvements | v1.1 | 0/? | Not started | - |
 | 10. Template Format | v1.1 | 0/? | Not started | - |
