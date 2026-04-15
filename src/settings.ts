@@ -81,6 +81,19 @@ export class TogglImportSettingTab extends PluginSettingTab {
 				);
 		}
 
+		new Setting(containerEl)
+			.setName('Sort order')
+			.setDesc('Order in which imported entries appear.')
+			.addDropdown(drop => drop
+				.addOption('asc', 'Ascending (oldest first)')
+				.addOption('desc', 'Descending (newest first)')
+				.setValue(this.plugin.settings.sortOrder)
+				.onChange(async (value) => {
+					this.plugin.settings.sortOrder = value as 'asc' | 'desc';
+					await this.plugin.saveSettings();
+				})
+			);
+
 		new Setting(containerEl).setName('Columns').setHeading();
 
 		const columns: Array<{ key: keyof TogglImportSettings['columns']; label: string }> = [

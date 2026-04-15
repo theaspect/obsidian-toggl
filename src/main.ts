@@ -14,6 +14,7 @@ export interface TogglImportSettings {
 	};
 	delimiter: string;
 	workspaceId: number;
+	sortOrder: 'asc' | 'desc';
 }
 
 export const DEFAULT_SETTINGS: TogglImportSettings = {
@@ -27,6 +28,7 @@ export const DEFAULT_SETTINGS: TogglImportSettings = {
 	},
 	delimiter: '|',
 	workspaceId: 0,
+	sortOrder: 'asc',
 };
 
 export default class TogglImportPlugin extends Plugin {
@@ -50,17 +52,19 @@ export default class TogglImportPlugin extends Plugin {
 					return;
 				}
 
-				// D-07: Date validation from active file basename
+				// D-07: Date validation from active file basename (IMP-02: prefix match)
 				const basename = this.app.workspace.getActiveFile()?.basename ?? '';
-				if (!/^\d{4}-\d{2}-\d{2}$/.test(basename)) {
-					new Notice('Active note filename is not a valid date (expected yyyy-mm-dd).');
+				const dateMatch = basename.match(/^(\d{4}-\d{2}-\d{2})/);
+				if (!dateMatch) {
+					new Notice('Note filename must start with a valid date (expected: yyyy-mm-dd, e.g. 2026-01-15 or 2026-01-15 Daily Note).');
 					return;
 				}
+				const date = dateMatch[1] as string;
 
 				// D-05: Fetch with structured error handling
 				let entries: TimeEntry[];
 				try {
-					entries = await fetchTimeEntries(this, basename);
+					entries = await fetchTimeEntries(this, date);
 				} catch (err: unknown) {
 					new Notice(err instanceof Error ? err.message : 'Toggl API error: unknown error');
 					return;

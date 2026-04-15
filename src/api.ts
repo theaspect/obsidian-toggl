@@ -98,6 +98,12 @@ export async function fetchTimeEntries(
 	// D-07/CMD-08: Filter running entries (silent)
 	const completed = raw.filter(e => !(e.duration < 0 || e.stop == null));
 
+	// IMP-01: Sort by start time per user setting (ascending default)
+	completed.sort((a, b) => {
+		const cmp = a.start.localeCompare(b.start);
+		return plugin.settings.sortOrder === 'desc' ? -cmp : cmp;
+	});
+
 	// Normalize and enrich entries
 	return completed.map(e => ({
 		id: e.id,
