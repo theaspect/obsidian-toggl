@@ -13,18 +13,26 @@ vi.mock('obsidian', () => ({
 import { fetchTimeEntries, TimeEntry } from '../src/api';
 
 // Mock plugin factory — creates a minimal object satisfying what fetchTimeEntries needs
-function createMockPlugin(overrides: Partial<{ apiToken: string; workspaceId: number }> = {}) {
+function createMockPlugin(overrides: Partial<{ apiToken: string; workspaceId: number; sortOrder: 'asc' | 'desc' }> = {}) {
 	return {
 		settings: {
 			workspaceId: overrides.workspaceId ?? 42,
 			outputFormat: 'table' as const,
 			columns: { description: true, startTime: true, duration: true, tags: false, project: false },
 			delimiter: '|',
+			sortOrder: overrides.sortOrder ?? 'asc',
 		},
 		getApiToken: vi.fn().mockResolvedValue(overrides.apiToken ?? 'test-token-abc123'),
 		saveSettings: vi.fn().mockResolvedValue(undefined),
 	} as any;
 }
+
+// Sort test entries — out-of-order to verify sorting
+const SORT_TEST_ENTRIES = [
+	{ id: 10, description: 'Late', start: '2024-06-15T14:00:00+00:00', stop: '2024-06-15T15:00:00+00:00', duration: 3600, project_id: null, tags: null, workspace_id: 42, user_id: 1 },
+	{ id: 11, description: 'Early', start: '2024-06-15T08:00:00+00:00', stop: '2024-06-15T09:00:00+00:00', duration: 3600, project_id: null, tags: null, workspace_id: 42, user_id: 1 },
+	{ id: 12, description: 'Mid', start: '2024-06-15T11:00:00+00:00', stop: '2024-06-15T12:00:00+00:00', duration: 3600, project_id: null, tags: null, workspace_id: 42, user_id: 1 },
+];
 
 // Sample Toggl API response data for mocking
 const SAMPLE_ENTRIES = [
@@ -213,6 +221,33 @@ describe('fetchTimeEntries', () => {
 			(call: any[]) => call[0].url.endsWith('/me')
 		);
 		expect(meCall).toBeUndefined();
+	});
+
+	// IMP-01: Sort order tests
+	it('sorts entries ascending by start time when sortOrder is asc (default)', async () => {
+		setupMockResponses({ entries: SORT_TEST_ENTRIES });
+		const plugin = createMockPlugin({ sortOrder: 'asc' });
+		const result = await fetchTimeEntries(plugin, '2024-06-15');
+		expect(result[0].start).toBe('2024-06-15T08:00:00+00:00');
+		expect(result[1].start).toBe('2024-06-15T11:00:00+00:00');
+		expect(result[2].start).toBe('2024-06-15T14:00:00+00:00');
+	});
+
+	it('sorts entries descending by start time when sortOrder is desc', async () => {
+		setupMockResponses({ entries: SORT_TEST_ENTRIES });
+		const plugin = createMockPlugin({ sortOrder: 'desc' });
+		const result = await fetchTimeEntries(plugin, '2024-06-15');
+		expect(result[0].start).toBe('2024-06-15T14:00:00+00:00');
+		expect(result[1].start).toBe('2024-06-15T11:00:00+00:00');
+		expect(result[2].start).toBe('2024-06-15T08:00:00+00:00');
+	});
+
+	it('default sort order is ascending', async () => {
+		setupMockResponses({ entries: SORT_TEST_ENTRIES });
+		const plugin = createMockPlugin(); // no sortOrder override — defaults to 'asc'
+		const result = await fetchTimeEntries(plugin, '2024-06-15');
+		expect(result[0].start).toBe('2024-06-15T08:00:00+00:00');
+		expect(result[2].start).toBe('2024-06-15T14:00:00+00:00');
 	});
 
 	it('does not include API token in error messages', async () => {

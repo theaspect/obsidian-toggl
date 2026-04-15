@@ -61,6 +61,7 @@ async function loadPluginAndGetCallback() {
 		},
 		delimiter: '|',
 		workspaceId: 42,
+		sortOrder: 'asc' as const,
 	};
 	await plugin.onload();
 	(plugin as any).getApiToken = vi.fn().mockResolvedValue('token');
@@ -111,7 +112,7 @@ describe('Import Toggl Entries command', () => {
 		await editorCallback(editor);
 
 		expect(mockNotice).toHaveBeenCalledWith(
-			'Active note filename is not a valid date (expected yyyy-mm-dd).'
+			'Note filename must start with a valid date (expected: yyyy-mm-dd, e.g. 2026-01-15 or 2026-01-15 Daily Note).'
 		);
 		expect(mockFetchTimeEntries).not.toHaveBeenCalled();
 	});
@@ -124,7 +125,7 @@ describe('Import Toggl Entries command', () => {
 		await editorCallback(editor);
 
 		expect(mockNotice).toHaveBeenCalledWith(
-			'Active note filename is not a valid date (expected yyyy-mm-dd).'
+			'Note filename must start with a valid date (expected: yyyy-mm-dd, e.g. 2026-01-15 or 2026-01-15 Daily Note).'
 		);
 		expect(mockFetchTimeEntries).not.toHaveBeenCalled();
 	});
@@ -181,6 +182,41 @@ describe('Import Toggl Entries command', () => {
 
 		expect(mockNotice).toHaveBeenCalledWith('No entries found for this date.');
 		expect(mockReplaceSelection).not.toHaveBeenCalled();
+	});
+
+	// IMP-02: prefix filename tests
+	it('IMP-02: basename with date prefix and suffix calls fetchTimeEntries with the date only', async () => {
+		mockGetActiveFile.mockReturnValue({ basename: '2026-12-31 Daily Note' });
+		mockFetchTimeEntries.mockResolvedValue([{ id: 1 }]);
+		mockFormatEntries.mockReturnValue('x');
+
+		const { editorCallback, editor } = await loadPluginAndGetCallback();
+		await editorCallback(editor);
+
+		expect(mockFetchTimeEntries).toHaveBeenCalledWith(expect.anything(), '2026-12-31');
+	});
+
+	it('IMP-02: exact yyyy-mm-dd basename still passes', async () => {
+		mockGetActiveFile.mockReturnValue({ basename: '2026-12-31' });
+		mockFetchTimeEntries.mockResolvedValue([{ id: 1 }]);
+		mockFormatEntries.mockReturnValue('x');
+
+		const { editorCallback, editor } = await loadPluginAndGetCallback();
+		await editorCallback(editor);
+
+		expect(mockFetchTimeEntries).toHaveBeenCalledWith(expect.anything(), '2026-12-31');
+	});
+
+	it('IMP-02: basename without date prefix shows updated error notice', async () => {
+		mockGetActiveFile.mockReturnValue({ basename: 'prefix-without-date-foo' });
+
+		const { editorCallback, editor } = await loadPluginAndGetCallback();
+		await editorCallback(editor);
+
+		expect(mockNotice).toHaveBeenCalledWith(
+			'Note filename must start with a valid date (expected: yyyy-mm-dd, e.g. 2026-01-15 or 2026-01-15 Daily Note).'
+		);
+		expect(mockFetchTimeEntries).not.toHaveBeenCalled();
 	});
 
 	// CMD-07 / REIMP-01: insert at cursor with trailing newline + success notice
