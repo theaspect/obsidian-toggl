@@ -146,7 +146,7 @@ describe('Test connection button (SEC-01)', () => {
 		expect(fakeButton.setDisabled).toHaveBeenCalledWith(true);
 		resolveIt({ fullname: 'Jane Doe' });
 		await pending;
-		// After settle: disabled false
+		// After settle: token is non-empty so re-enabled (false)
 		expect(fakeButton.setDisabled).toHaveBeenCalledWith(false);
 	});
 
@@ -162,6 +162,20 @@ describe('Test connection button (SEC-01)', () => {
 		await pending;
 		expect(fakeButton.setDisabled).toHaveBeenCalledWith(false);
 		expect(mockNotice).toHaveBeenCalledWith('Toggl API error: network request failed');
+	});
+
+	it('SEC-01: button is disabled initially when token is empty', () => {
+		mockLoadLocalStorage.mockReturnValue('');
+		const { tab } = makeTab();
+		tab.display();
+		expect(fakeButton.setDisabled).toHaveBeenCalledWith(true);
+	});
+
+	it('SEC-01: button is enabled initially when token is present', () => {
+		mockLoadLocalStorage.mockReturnValue('some-token');
+		const { tab } = makeTab();
+		tab.display();
+		expect(fakeButton.setDisabled).toHaveBeenCalledWith(false);
 	});
 
 	it('SEC-01: non-Error rejection falls back to generic message', async () => {

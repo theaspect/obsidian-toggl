@@ -14,6 +14,8 @@ export class TogglImportSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
+		let testBtn: ButtonComponent;
+
 		new Setting(containerEl)
 			.setName('Toggl API token')
 			.setDesc('Stored locally on this device \u2014 not synced to Obsidian Sync.')
@@ -22,15 +24,20 @@ export class TogglImportSettingTab extends PluginSettingTab {
 				.setValue((this.plugin.app.loadLocalStorage('toggl-api-token') as string | null) ?? '')
 				.onChange((value) => {
 					this.plugin.app.saveLocalStorage('toggl-api-token', value);
+					if (testBtn) testBtn.setDisabled(value.trim() === '');
 				})
 				.then(c => { c.inputEl.type = 'password'; })
 			);
+
+		const currentToken = (this.plugin.app.loadLocalStorage('toggl-api-token') as string | null) ?? '';
 
 		new Setting(containerEl)
 			.setName('Test connection')
 			.setDesc('Verify the API token by calling the Toggl /me endpoint.')
 			.addButton((btn: ButtonComponent) => {
+				testBtn = btn;
 				btn.setButtonText('Test')
+					.setDisabled(currentToken.trim() === '')
 					.onClick(async () => {
 						btn.setDisabled(true);
 						btn.setButtonText('Testing...');
@@ -41,7 +48,8 @@ export class TogglImportSettingTab extends PluginSettingTab {
 						} catch (err: unknown) {
 							new Notice(err instanceof Error ? err.message : 'Toggl API error: unknown error');
 						} finally {
-							btn.setDisabled(false);
+							const current = (this.plugin.app.loadLocalStorage('toggl-api-token') as string | null) ?? '';
+							btn.setDisabled(current.trim() === '');
 							btn.setButtonText('Test');
 						}
 					});
