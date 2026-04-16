@@ -87,7 +87,7 @@ export class TogglImportSettingTab extends PluginSettingTab {
 				.setName('Template')
 				.setDesc('Available: description, start, duration, tags, project')
 				.addTextArea(text => text
-					.setPlaceholder('e.g. ${description} (${duration})')
+					.setPlaceholder('e.g. $description ($duration)')
 					.setValue(this.plugin.settings.templateString)
 					.onChange(async (value) => {
 						this.plugin.settings.templateString = value;
