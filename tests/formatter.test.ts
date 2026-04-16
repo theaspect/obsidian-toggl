@@ -9,7 +9,7 @@ function makeSettings(overrides: Partial<TogglImportSettings> = {}): TogglImport
 		workspaceId: 0,
 		outputFormat: 'table',
 		delimiter: '|',
-		templateString: '${description} (${duration})',
+		templateString: '$description ($duration)',
 		sortOrder: 'asc' as const,
 		columns: {
 			description: true,
@@ -249,52 +249,34 @@ describe('formatEntries — template mode', () => {
 	it('substitutes description and duration variables', () => {
 		const settings = makeSettings({
 			outputFormat: 'template',
-			templateString: '${description} (${duration})',
+			templateString: '$description ($duration)',
 		});
 		const output = formatEntries([makeEntry()], settings);
 		expect(output).toBe('Write tests (1h 30m)');
 	});
 
-	it('expression support: ${project ?? "n/a"} returns n/a for empty project', () => {
+	it('unknown variable passthrough: $foo appears literally in output', () => {
 		const settings = makeSettings({
 			outputFormat: 'template',
-			templateString: '${project ?? "n/a"}',
-		});
-		const output = formatEntries([makeEntry({ project_name: '' })], settings);
-		expect(output).toBe('n/a');
-	});
-
-	it('expression support: ${tags || "none"} returns none for empty tags', () => {
-		const settings = makeSettings({
-			outputFormat: 'template',
-			templateString: '${tags || "none"}',
-		});
-		const output = formatEntries([makeEntry({ tags: [] })], settings);
-		expect(output).toBe('none');
-	});
-
-	it('unknown variable passthrough: ${foo} appears literally in output', () => {
-		const settings = makeSettings({
-			outputFormat: 'template',
-			templateString: '${foo} ${description}',
+			templateString: '$foo $description',
 		});
 		const output = formatEntries([makeEntry()], settings);
-		expect(output).toBe('${foo} Write tests');
+		expect(output).toBe('$foo Write tests');
 	});
 
-	it('empty field resolution: ${project} returns empty string when project_name is empty', () => {
+	it('empty field resolution: $project returns empty string when project_name is empty', () => {
 		const settings = makeSettings({
 			outputFormat: 'template',
-			templateString: '${project}',
+			templateString: '$project',
 		});
 		const output = formatEntries([makeEntry({ project_name: '' })], settings);
 		expect(output).toBe('');
 	});
 
-	it('empty tags: ${tags} returns empty string when tags array is empty', () => {
+	it('empty tags: $tags returns empty string when tags array is empty', () => {
 		const settings = makeSettings({
 			outputFormat: 'template',
-			templateString: '${tags}',
+			templateString: '$tags',
 		});
 		const output = formatEntries([makeEntry({ tags: [] })], settings);
 		expect(output).toBe('');
@@ -303,7 +285,7 @@ describe('formatEntries — template mode', () => {
 	it('multi-entry: 3 entries produce 3 lines separated by newline, no header row', () => {
 		const settings = makeSettings({
 			outputFormat: 'template',
-			templateString: '${description}',
+			templateString: '$description',
 		});
 		const entries = [
 			makeEntry({ description: 'Task A' }),
@@ -321,25 +303,24 @@ describe('formatEntries — template mode', () => {
 	it('empty entries array returns empty string', () => {
 		const settings = makeSettings({
 			outputFormat: 'template',
-			templateString: '${description}',
+			templateString: '$description',
 		});
 		expect(formatEntries([], settings)).toBe('');
 	});
 
-	it('broken template (unclosed brace) does not throw, returns raw template string', () => {
+	it('unknown-only template: $foo $bar both pass through literally', () => {
 		const settings = makeSettings({
 			outputFormat: 'template',
-			templateString: '${description',
+			templateString: '$foo $bar',
 		});
-		expect(() => formatEntries([makeEntry()], settings)).not.toThrow();
 		const output = formatEntries([makeEntry()], settings);
-		expect(output).toBe('${description');
+		expect(output).toBe('$foo $bar');
 	});
 
 	it('all 5 variables substitute correctly in a single template', () => {
 		const settings = makeSettings({
 			outputFormat: 'template',
-			templateString: '${description} ${start} ${duration} ${tags} ${project}',
+			templateString: '$description $start $duration $tags $project',
 		});
 		const entry = makeEntry();
 		const output = formatEntries([entry], settings);
@@ -351,12 +332,21 @@ describe('formatEntries — template mode', () => {
 		expect(output).toMatch(/\d{2}:\d{2}/);
 	});
 
-	it('tags renders as comma-separated: tags ["a","b"] with ${tags} returns "a, b"', () => {
+	it('tags renders as comma-separated: tags ["a","b"] with $tags returns "a, b"', () => {
 		const settings = makeSettings({
 			outputFormat: 'template',
-			templateString: '${tags}',
+			templateString: '$tags',
 		});
 		const output = formatEntries([makeEntry({ tags: ['a', 'b'] })], settings);
 		expect(output).toBe('a, b');
+	});
+
+	it('unknown variable appears twice — both occurrences pass through literally', () => {
+		const settings = makeSettings({
+			outputFormat: 'template',
+			templateString: '$foo and $foo',
+		});
+		const output = formatEntries([makeEntry()], settings);
+		expect(output).toBe('$foo and $foo');
 	});
 });

@@ -28,7 +28,7 @@ export const DEFAULT_SETTINGS: TogglImportSettings = {
 		project: false,
 	},
 	delimiter: '|',
-	templateString: '${description} (${duration})',
+	templateString: '$description ($duration)',
 	workspaceId: 0,
 	sortOrder: 'asc',
 };
