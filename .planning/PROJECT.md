@@ -4,7 +4,7 @@
 
 An Obsidian plugin that imports Toggl Track time entries into daily notes with a single command. The active note's filename (yyyy-mm-dd) determines the date, entries are fetched from Toggl's API, and the formatted output is inserted at the cursor. Format is fully configurable — markdown table or delimited plain text, both with the same selectable columns.
 
-Shipped v1.0 MVP (2026-04-13): all core features working end-to-end with 49 passing tests and UAT approval.
+Shipped v1.0 MVP (2026-04-13): all core features working end-to-end with 49 passing tests and UAT approval. v1.1 in progress — Phase 09 complete (sort order + filename prefix parsing).
 
 ## Core Value
 
@@ -28,9 +28,12 @@ One command pulls the day's Toggl entries into your daily note, formatted exactl
 - ✓ `manifest.json` correctly structured with unique plugin id, `minAppVersion`, `isDesktopOnly: true` — v1.0 (REL-02)
 - ✓ GitHub Actions workflow publishes release assets on git tag — v1.0 (REL-03)
 
+- ✓ Entries sort by start time ascending by default (configurable asc/desc) — v1.1 (IMP-01)
+- ✓ Import command accepts yyyy-mm-dd prefixed filenames (e.g. "2026-12-31 Daily Note") — v1.1 (IMP-02, validated in Phase 09)
+
 ### Active
 
-(None — all v1 requirements shipped. New requirements defined when next milestone begins.)
+(None — all current requirements shipped. New requirements defined when next milestone begins.)
 
 ### Out of Scope
 
@@ -47,7 +50,7 @@ One command pulls the day's Toggl entries into your daily note, formatted exactl
 
 ## Context
 
-- Shipped v1.0 MVP: 1,036 TypeScript LOC, 78 files, 49 tests passing, UAT approved
+- Shipped v1.0 MVP: 1,036 TypeScript LOC, 78 files, 49 tests passing, UAT approved; Phase 09 complete (66 tests passing)
 - Tech stack: TypeScript + Obsidian Plugin API, esbuild bundler, vitest test runner
 - Toggl API v9, Basic Auth with API token, `requestUrl` (Obsidian's HTTP abstraction)
 - Running entries (active timers) are silently filtered — not inserted into notes
@@ -87,4 +90,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-13 after v1.0 MVP milestone*
+*Last updated: 2026-04-16 after Phase 09 (import-behavior) complete*
