@@ -47,7 +47,7 @@ Full milestone archive: `.planning/milestones/v1.0-ROADMAP.md`
 **Plans:** 1 plan
 
 Plans:
-- [ ] 09-01-PLAN.md — Sort entries by start time (configurable asc/desc) + parse date from filename prefix
+- [x] 09-01-PLAN.md — Sort entries by start time (configurable asc/desc) + parse date from filename prefix
 
 ### Phase 10: Formatting
 **Goal**: Users can define a custom template string using `${variable}` placeholders as a third format mode
