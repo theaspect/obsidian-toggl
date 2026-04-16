@@ -93,6 +93,7 @@ export class TogglImportSettingTab extends PluginSettingTab {
 						this.plugin.settings.templateString = value;
 						await this.plugin.saveSettings();
 					})
+					.then(c => { c.inputEl.style.width = '100%'; })
 				);
 		}
 
