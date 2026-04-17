@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Polish & Registry
 status: executing
-stopped_at: Phase 11 context gathered
-last_updated: "2026-04-16T16:11:49.812Z"
-last_activity: 2026-04-16
+stopped_at: Completed 11-01-PLAN.md
+last_updated: "2026-04-17T03:05:43.398Z"
+last_activity: 2026-04-17
 progress:
   total_phases: 3
   completed_phases: 2
-  total_plans: 2
-  completed_plans: 2
-  percent: 100
+  total_plans: 4
+  completed_plans: 3
+  percent: 75
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-13)
 
 **Core value:** One command pulls the day's Toggl entries into your daily note, formatted exactly how you want them.
-**Current focus:** Phase 09 — import-behavior
+**Current focus:** Phase 11 — release
 
 ## Current Position
 
-Phase: 11
-Plan: Not started
+Phase: 11 (release) — EXECUTING
+Plan: 2 of 2
 Milestone v1.1 Polish & Registry — Phase 08 security COMPLETE
-Status: Executing Phase 09
+Status: Ready to execute
 
 ## Accumulated Context
 
@@ -51,6 +51,7 @@ Phase 08 decisions:
 - `minAppVersion` bumped to `1.8.7` (localStorage API requirement)
 - Test connection button disabled when token field is empty (UAT feedback)
 - No migration path — users re-enter token after upgrade (D-09)
+- [Phase 11-release]: Version bumped to 1.1.0 across manifest.json, package.json, versions.json; MIT LICENSE and full README created for registry submission
 
 ### Pending Todos
 
@@ -69,7 +70,7 @@ None.
 
 ## Session Continuity
 
-Last activity: 2026-04-16
-Last session: 2026-04-16T16:11:49.793Z
-Stopped at: Phase 11 context gathered
+Last activity: 2026-04-17
+Last session: 2026-04-17T03:05:43.393Z
+Stopped at: Completed 11-01-PLAN.md
 Resume with: `/gsd-next`

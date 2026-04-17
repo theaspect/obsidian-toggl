@@ -26,7 +26,7 @@
 
 ### Release
 
-- [ ] **REL-01**: README.md covers product overview, manual installation, BRAT installation, usage walkthrough, settings reference, and development setup
+- [x] **REL-01**: README.md covers product overview, manual installation, BRAT installation, usage walkthrough, settings reference, and development setup
 - [ ] **REL-02**: Plugin meets all Obsidian community plugin registry requirements and a submission PR is opened
 
 ## v2 Requirements
@@ -60,7 +60,7 @@
 | IMP-01 | Phase 9 | Pending |
 | IMP-02 | Phase 9 | Pending |
 | FMT-01 | Phase 10 | Pending |
-| REL-01 | Phase 11 | Pending |
+| REL-01 | Phase 11 | Complete |
 | REL-02 | Phase 11 | Pending |
 
 **Coverage:**
