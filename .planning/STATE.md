@@ -70,10 +70,11 @@ None.
 | 260417-eld | Fix code review findings WR-01 IN-01 IN-02 | 2026-04-17 | d49e3ff | [260417-eld-fix-code-review-findings-wr-01-in-01-in-](./quick/260417-eld-fix-code-review-findings-wr-01-in-01-in-/) |
 | 260417-etn | full code and UI review: identify potential problems, discuss fixes, document decisions | 2026-04-17 | — | [260417-etn-full-code-and-ui-review-identify-potenti](./quick/260417-etn-full-code-and-ui-review-identify-potenti/) |
 | 260417-spk | update readme with disclosure that you required toggl account, the plugin will communicate with toggle api and the most important that plugin doesn't affilated with toggl company | 2026-04-17 | b3bfd1d | [260417-spk-update-readme-with-disclosure-that-you-r](./quick/260417-spk-update-readme-with-disclosure-that-you-r/) |
+| 260417-t1o | Settings UI always-show disabled fields, reorder sections, add README release instructions | 2026-04-17 | 00e6aee | [260417-t1o-settings-ui-always-show-disabled-fields-](./quick/260417-t1o-settings-ui-always-show-disabled-fields-/) |
 
 ## Session Continuity
 
 Last activity: 2026-04-17
-Last session: 2026-04-17T13:40:16.928Z
-Stopped at: Completed quick task 260417-spk
+Last session: 2026-04-17T13:57:07Z
+Stopped at: Completed quick task 260417-t1o
 Resume with: `/gsd-next`
