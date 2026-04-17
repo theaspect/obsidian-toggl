@@ -65,6 +65,9 @@ async function loadProjectCache(workspaceId: number, token: string): Promise<voi
 		`${BASE}/workspaces/${workspaceId}/projects`,
 		token,
 	);
+	if (!Array.isArray(projects)) {
+		throw new Error('Toggl API error: unexpected response from projects endpoint');
+	}
 	projectCache = new Map(projects.map(p => [p.id, p.name]));
 }
 
