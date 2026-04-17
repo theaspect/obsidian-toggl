@@ -88,6 +88,20 @@ Copy `main.js` and `manifest.json` to your vault's plugin folder
 [Hot-Reload](https://github.com/pjeby/hot-reload) community plugin auto-reloads the
 plugin whenever `main.js` changes — no Obsidian restart needed.
 
+## Releasing a new version
+
+1. Bump the version number (must be bare semver — e.g. `1.1.0`, **not** `v1.1.0`) in
+   three files:
+   - `manifest.json` — `"version"` field
+   - `package.json` — `"version"` field
+   - `versions.json` — add a new entry mapping the new version to its `minAppVersion`,
+     e.g. `"1.1.0": "1.8.7"`
+2. Commit the version bump: `git commit -am "chore: bump version to 1.1.0"`
+3. Push a bare semver tag: `git tag 1.1.0 && git push origin 1.1.0`
+
+GitHub Actions picks up the tag and publishes the release automatically — no manual
+draft or upload needed.
+
 ## License
 
 [MIT](LICENSE)
