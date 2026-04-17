@@ -23,6 +23,9 @@ export async function togglGet<T>(url: string, token: string): Promise<T> {
 	if (resp.status < 200 || resp.status >= 300) {
 		throw new Error(`Toggl API error: ${resp.status}`);
 	}
+	if (resp.json == null) {
+		throw new Error(`Toggl API error: empty response body (${resp.status})`);
+	}
 	return resp.json as T;
 }
 
