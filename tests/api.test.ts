@@ -13,7 +13,7 @@ vi.mock('obsidian', () => ({
 import { fetchTimeEntries, TimeEntry } from '../src/api';
 
 // Mock plugin factory — creates a minimal object satisfying what fetchTimeEntries needs
-function createMockPlugin(overrides: Partial<{ apiToken: string; workspaceId: number; sortOrder: 'asc' | 'desc' }> = {}) {
+function createMockPlugin(overrides: Partial<{ apiToken: string; workspaceId: number; sortOrder: 'asc' | 'desc'; dayWrapTime: string }> = {}) {
 	return {
 		settings: {
 			workspaceId: overrides.workspaceId ?? 42,
@@ -21,6 +21,7 @@ function createMockPlugin(overrides: Partial<{ apiToken: string; workspaceId: nu
 			columns: { description: true, startTime: true, duration: true, tags: false, project: false },
 			delimiter: '|',
 			sortOrder: overrides.sortOrder ?? 'asc',
+			dayWrapTime: overrides.dayWrapTime ?? '00:00',
 		},
 		getApiToken: vi.fn().mockResolvedValue(overrides.apiToken ?? 'test-token-abc123'),
 		saveSettings: vi.fn().mockResolvedValue(undefined),
@@ -274,5 +275,39 @@ describe('fetchTimeEntries', () => {
 		}
 		expect(errorMessage).not.toContain('test-token-abc123');
 		expect(errorMessage.length).toBeGreaterThan(0);
+	});
+});
+
+describe('fetchTimeEntries — day wrap time filter', () => {
+	beforeEach(() => {
+		mockRequestUrl.mockReset();
+	});
+
+	it('default 00:00 does not filter any entries', async () => {
+		setupMockResponses({ entries: SORT_TEST_ENTRIES });
+		const plugin = createMockPlugin(); // dayWrapTime defaults to '00:00'
+		const result = await fetchTimeEntries(plugin, '2024-06-15');
+		expect(result).toHaveLength(SORT_TEST_ENTRIES.length);
+	});
+
+	it('filters entries whose local start hour is before wrap time', async () => {
+		// Create entries with known UTC times. The filter compares local hours/minutes.
+		// We use 12:00 and 14:00 UTC which will be well above 00:00 in any timezone,
+		// and test that a wrap of "23:00" filters them (no entry starts at or after 23:00 local).
+		setupMockResponses({ entries: SORT_TEST_ENTRIES });
+		const plugin = createMockPlugin();
+		plugin.settings.dayWrapTime = '23:00';
+		const result = await fetchTimeEntries(plugin, '2024-06-15');
+		// All test entries start at 08:00, 11:00, 14:00 UTC — none reach 23:00 local
+		expect(result).toHaveLength(0);
+	});
+
+	it('keeps entries at or after wrap time', async () => {
+		setupMockResponses({ entries: SORT_TEST_ENTRIES });
+		const plugin = createMockPlugin();
+		plugin.settings.dayWrapTime = '00:01'; // just past midnight — all entries pass
+		const result = await fetchTimeEntries(plugin, '2024-06-15');
+		// All entries start at 08:00, 11:00, 14:00 UTC — well after 00:01 local
+		expect(result).toHaveLength(SORT_TEST_ENTRIES.length);
 	});
 });
