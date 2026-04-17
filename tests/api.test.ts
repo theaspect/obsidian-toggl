@@ -10,7 +10,7 @@ vi.mock('obsidian', () => ({
 }));
 
 // Import AFTER mock is set up
-import { fetchTimeEntries, TimeEntry } from '../src/api';
+import { fetchTimeEntries, TimeEntry, _resetProjectCache } from '../src/api';
 
 // Mock plugin factory — creates a minimal object satisfying what fetchTimeEntries needs
 function createMockPlugin(overrides: Partial<{ apiToken: string; workspaceId: number; sortOrder: 'asc' | 'desc'; dayWrapTime: string }> = {}) {
@@ -66,6 +66,7 @@ function setupMockResponses(opts: { entries?: any[]; projects?: any[]; meWorkspa
 describe('fetchTimeEntries', () => {
 	beforeEach(() => {
 		mockRequestUrl.mockReset();
+		_resetProjectCache();
 	});
 
 	it('constructs date boundaries with local midnight', async () => {
@@ -281,6 +282,7 @@ describe('fetchTimeEntries', () => {
 describe('fetchTimeEntries — day wrap time filter', () => {
 	beforeEach(() => {
 		mockRequestUrl.mockReset();
+		_resetProjectCache();
 	});
 
 	it('default 00:00 does not filter any entries', async () => {
