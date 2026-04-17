@@ -71,6 +71,7 @@ None.
 | 260417-etn | full code and UI review: identify potential problems, discuss fixes, document decisions | 2026-04-17 | — | [260417-etn-full-code-and-ui-review-identify-potenti](./quick/260417-etn-full-code-and-ui-review-identify-potenti/) |
 | 260417-spk | update readme with disclosure that you required toggl account, the plugin will communicate with toggle api and the most important that plugin doesn't affilated with toggl company | 2026-04-17 | b3bfd1d | [260417-spk-update-readme-with-disclosure-that-you-r](./quick/260417-spk-update-readme-with-disclosure-that-you-r/) |
 | 260417-t1o | Settings UI always-show disabled fields, reorder sections, add README release instructions | 2026-04-17 | 00e6aee | [260417-t1o-settings-ui-always-show-disabled-fields-](./quick/260417-t1o-settings-ui-always-show-disabled-fields-/) |
+| 260417-t99 | day wrap time field should be short and right aligned | 2026-04-17 | c4441e4 | [260417-t99-day-wrap-time-field-should-be-short-and-](./quick/260417-t99-day-wrap-time-field-should-be-short-and-/) |
 
 ## Session Continuity
 
