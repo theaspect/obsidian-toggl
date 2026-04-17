@@ -67,6 +67,7 @@ None.
 |---|-------------|------|--------|-----------|
 | 260416-n9z | Simplify template format to $var pattern replacement (replace new Function with regex) | 2026-04-16 | d7a45aa | [260416-n9z-looks-like-arbitrary-formatting-introduc](./quick/260416-n9z-looks-like-arbitrary-formatting-introduc/) |
 | 260416-vuj | Widen template textarea in settings to full width | 2026-04-16 | a7b0b1e | [260416-vuj-widen-the-template-textarea-in-settings-](./quick/260416-vuj-widen-the-template-textarea-in-settings-/) |
+| 260417-eld | Fix code review findings WR-01 IN-01 IN-02 | 2026-04-17 | d49e3ff | [260417-eld-fix-code-review-findings-wr-01-in-01-in-](./quick/260417-eld-fix-code-review-findings-wr-01-in-01-in-/) |
 
 ## Session Continuity
 
