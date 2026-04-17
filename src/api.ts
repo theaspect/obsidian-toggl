@@ -98,14 +98,24 @@ export async function fetchTimeEntries(
 	// D-07/CMD-08: Filter running entries (silent)
 	const completed = raw.filter(e => !(e.duration < 0 || e.stop == null));
 
+	// Day wrap time: exclude entries whose local start is before the configured boundary
+	const [wrapH, wrapM] = plugin.settings.dayWrapTime.split(':').map(Number);
+	const wrapMinutes = (wrapH ?? 0) * 60 + (wrapM ?? 0);
+	const wrapped = wrapMinutes === 0
+		? completed
+		: completed.filter(e => {
+				const startLocal = new Date(e.start);
+				return startLocal.getHours() * 60 + startLocal.getMinutes() >= wrapMinutes;
+			});
+
 	// IMP-01: Sort by start time per user setting (ascending default)
-	completed.sort((a, b) => {
+	wrapped.sort((a, b) => {
 		const cmp = a.start.localeCompare(b.start);
 		return plugin.settings.sortOrder === 'desc' ? -cmp : cmp;
 	});
 
 	// Normalize and enrich entries
-	return completed.map(e => ({
+	return wrapped.map(e => ({
 		id: e.id,
 		description: e.description ?? '',
 		start: e.start,
