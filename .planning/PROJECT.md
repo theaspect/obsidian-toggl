@@ -4,7 +4,7 @@
 
 An Obsidian plugin that imports Toggl Track time entries into daily notes with a single command. The active note's filename (yyyy-mm-dd) determines the date, entries are fetched from Toggl's API, and the formatted output is inserted at the cursor. Format is fully configurable — markdown table or delimited plain text, both with the same selectable columns.
 
-Shipped v1.0 MVP (2026-04-13): all core features working end-to-end with 49 passing tests and UAT approval. v1.1 in progress — Phase 09 complete (sort order + filename prefix parsing).
+Shipped v1.0 MVP (2026-04-13): all core features working end-to-end with 49 passing tests and UAT approval. v1.1 complete — community plugin registry PR submitted (Phase 11 complete, 79 tests passing).
 
 ## Core Value
 
@@ -55,7 +55,7 @@ One command pulls the day's Toggl entries into your daily note, formatted exactl
 - Toggl API v9, Basic Auth with API token, `requestUrl` (Obsidian's HTTP abstraction)
 - Running entries (active timers) are silently filtered — not inserted into notes
 - GitHub Actions release workflow: push a semver tag (no `v` prefix per Obsidian registry requirement) → assets attached automatically
-- Plugin not yet submitted to Obsidian community plugin registry
+- Community plugin registry PR submitted to obsidianmd/obsidian-releases (Phase 11 complete)
 
 ## Constraints
 
@@ -90,4 +90,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-16 after Phase 09 (import-behavior) complete*
+*Last updated: 2026-04-17 after Phase 11 (release) complete — v1.1 milestone done*
