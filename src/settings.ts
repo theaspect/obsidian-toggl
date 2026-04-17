@@ -86,6 +86,9 @@ export class TogglImportSettingTab extends PluginSettingTab {
 			new Setting(containerEl)
 				.setName('Template')
 				.setDesc('Available: description, start, duration, tags, project')
+				// addText (wide): deliberately using text input rather than addTextArea —
+				// the single-line wide input (styled by quick task 260416-vuj) is preferred
+				// for template strings over a multi-line textarea.
 				.addText(text => text
 					.setPlaceholder('e.g. $description ($duration)')
 					.setValue(this.plugin.settings.templateString)
@@ -116,6 +119,10 @@ export class TogglImportSettingTab extends PluginSettingTab {
 				.setPlaceholder('00:00')
 				.setValue(this.plugin.settings.dayWrapTime)
 				.onChange(async (value) => {
+					if (!/^\d{2}:\d{2}$/.test(value)) {
+						new Notice('Day wrap time must be in HH:MM format (e.g. 02:00). Value not saved.');
+						return;
+					}
 					this.plugin.settings.dayWrapTime = value;
 					await this.plugin.saveSettings();
 				})
