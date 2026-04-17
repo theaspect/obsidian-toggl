@@ -69,10 +69,11 @@ None.
 | 260416-vuj | Widen template textarea in settings to full width | 2026-04-16 | a7b0b1e | [260416-vuj-widen-the-template-textarea-in-settings-](./quick/260416-vuj-widen-the-template-textarea-in-settings-/) |
 | 260417-eld | Fix code review findings WR-01 IN-01 IN-02 | 2026-04-17 | d49e3ff | [260417-eld-fix-code-review-findings-wr-01-in-01-in-](./quick/260417-eld-fix-code-review-findings-wr-01-in-01-in-/) |
 | 260417-etn | full code and UI review: identify potential problems, discuss fixes, document decisions | 2026-04-17 | — | [260417-etn-full-code-and-ui-review-identify-potenti](./quick/260417-etn-full-code-and-ui-review-identify-potenti/) |
+| 260417-spk | update readme with disclosure that you required toggl account, the plugin will communicate with toggle api and the most important that plugin doesn't affilated with toggl company | 2026-04-17 | b3bfd1d | [260417-spk-update-readme-with-disclosure-that-you-r](./quick/260417-spk-update-readme-with-disclosure-that-you-r/) |
 
 ## Session Continuity
 
 Last activity: 2026-04-17
-Last session: 2026-04-17T03:05:43.393Z
-Stopped at: Completed 11-01-PLAN.md
+Last session: 2026-04-17T13:40:16.928Z
+Stopped at: Completed quick task 260417-spk
 Resume with: `/gsd-next`
