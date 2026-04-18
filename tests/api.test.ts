@@ -312,4 +312,38 @@ describe('fetchTimeEntries — day wrap time filter', () => {
 		// All entries start at 08:00, 11:00, 14:00 UTC — well after 00:01 local
 		expect(result).toHaveLength(SORT_TEST_ENTRIES.length);
 	});
+
+	it('extends end_date past current day when wrap is set', async () => {
+		setupMockResponses({ entries: SORT_TEST_ENTRIES });
+		const plugin = createMockPlugin();
+		plugin.settings.dayWrapTime = '03:30';
+		await fetchTimeEntries(plugin, '2024-06-15');
+		const call = mockRequestUrl.mock.calls.find((c: any[]) => c[0].url.includes('/me/time_entries'));
+		expect(call).toBeDefined();
+		const endMatch = call![0].url.match(/end_date=([^&]+)/);
+		expect(endMatch).toBeTruthy();
+		const endDate = new Date(decodeURIComponent(endMatch![1]));
+		// end_date must be after local midnight of the next day (i.e. beyond current day 23:59:59)
+		expect(endDate.getTime()).toBeGreaterThan(new Date('2024-06-15T23:59:59').getTime());
+	});
+
+	it('includes next-day entries whose local start is before wrap time', async () => {
+		// Use local-time string (no TZ suffix) so new Date() parses as local — timezone-independent
+		const nextDayEntry = { id: 20, description: 'Night owl', start: '2024-06-16T02:00:00', stop: '2024-06-16T02:30:00', duration: 1800, project_id: null, tags: null, workspace_id: 42, user_id: 1 };
+		setupMockResponses({ entries: [nextDayEntry] });
+		const plugin = createMockPlugin();
+		plugin.settings.dayWrapTime = '03:30';
+		const result = await fetchTimeEntries(plugin, '2024-06-15');
+		expect(result.find((e: TimeEntry) => e.id === 20)).toBeDefined();
+	});
+
+	it('excludes next-day entries whose local start is at or after wrap time', async () => {
+		// 04:00 local on next day is after wrap 03:30 — use local-time string for timezone independence
+		const nextDayEntry = { id: 21, description: 'Morning', start: '2024-06-16T04:00:00', stop: '2024-06-16T05:00:00', duration: 3600, project_id: null, tags: null, workspace_id: 42, user_id: 1 };
+		setupMockResponses({ entries: [nextDayEntry] });
+		const plugin = createMockPlugin();
+		plugin.settings.dayWrapTime = '03:30';
+		const result = await fetchTimeEntries(plugin, '2024-06-15');
+		expect(result.find((e: TimeEntry) => e.id === 21)).toBeUndefined();
+	});
 });

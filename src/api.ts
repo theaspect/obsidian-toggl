@@ -97,9 +97,24 @@ export async function fetchTimeEntries(
 	// D-02/D-03: Load project cache (no-op if already loaded this session)
 	await loadProjectCache(workspaceId, token);
 
+	// Parse wrap time early — drives both date range and filter logic
+	const parts = plugin.settings.dayWrapTime.split(':').map(Number);
+	const wrapH = parts[0] ?? NaN;
+	const wrapM = parts[1] ?? NaN;
+	const wrapMinutes = isNaN(wrapH) || isNaN(wrapM) ? 0 : wrapH * 60 + wrapM;
+
 	// D-01: Construct date boundaries as local midnight -> UTC
+	// When wrap is set, extend end to next_day@wrapTime to capture overnight entries
 	const start = new Date(date + 'T00:00:00').toISOString();
-	const end = new Date(date + 'T23:59:59').toISOString(); // 1-second gap is intentional and benign: Toggl uses inclusive matching at second precision
+	let end: string;
+	const nextDay = addOneDay(date);
+	if (wrapMinutes > 0) {
+		const wrapHH = String(wrapH).padStart(2, '0');
+		const wrapMM = String(wrapM).padStart(2, '0');
+		end = new Date(nextDay + 'T' + wrapHH + ':' + wrapMM + ':00').toISOString();
+	} else {
+		end = new Date(date + 'T23:59:59').toISOString(); // 1-second gap is intentional and benign
+	}
 
 	// CMD-04: Fetch time entries for date range
 	const raw = await togglGet<RawTimeEntry[]>(
@@ -110,16 +125,19 @@ export async function fetchTimeEntries(
 	// D-07/CMD-08: Filter running entries (silent)
 	const completed = raw.filter(e => !(e.duration < 0 || e.stop == null));
 
-	// Day wrap time: exclude entries whose local start is before the configured boundary
-	const parts = plugin.settings.dayWrapTime.split(':').map(Number);
-	const wrapH = parts[0] ?? NaN;
-	const wrapM = parts[1] ?? NaN;
-	const wrapMinutes = isNaN(wrapH) || isNaN(wrapM) ? 0 : wrapH * 60 + wrapM;
+	// Day wrap time: keep entries that belong to this logical day
+	// - current date: entries at/after wrap time (earlier ones belong to the previous day)
+	// - next day: entries before wrap time (they are overnight overflow into this day)
 	const wrapped = wrapMinutes === 0
 		? completed
 		: completed.filter(e => {
 				const startLocal = new Date(e.start);
-				return startLocal.getHours() * 60 + startLocal.getMinutes() >= wrapMinutes;
+				const startLocalMinutes = startLocal.getHours() * 60 + startLocal.getMinutes();
+				const entryDate = localDateStr(startLocal);
+				if (entryDate === date) {
+					return startLocalMinutes >= wrapMinutes;
+				}
+				return startLocalMinutes < wrapMinutes;
 			});
 
 	// IMP-01: Sort by start time per user setting (ascending default)
@@ -143,4 +161,14 @@ export async function fetchTimeEntries(
 /** @internal — exported only for testing */
 export function _resetProjectCache(): void {
 	projectCache = null;
+}
+
+function addOneDay(date: string): string {
+	const d = new Date(date + 'T12:00:00'); // noon avoids DST edge cases
+	d.setDate(d.getDate() + 1);
+	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function localDateStr(d: Date): string {
+	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
