@@ -16,24 +16,23 @@ export class TogglImportSettingTab extends PluginSettingTab {
 
 		let testBtn: ButtonComponent;
 
+		const currentToken = (this.plugin.app.loadLocalStorage('toggl-api-token') as string | null) ?? '';
+
+		// --- Connection section ---
+		new Setting(containerEl).setName('Connection').setHeading();
+
 		new Setting(containerEl)
 			.setName('Toggl API token')
 			.setDesc('Stored locally on this device \u2014 not synced to Obsidian Sync.')
 			.addText(text => text
 				.setPlaceholder('Enter your API token')
-				.setValue((this.plugin.app.loadLocalStorage('toggl-api-token') as string | null) ?? '')
+				.setValue(currentToken)
 				.onChange((value) => {
 					this.plugin.app.saveLocalStorage('toggl-api-token', value);
 					if (testBtn) testBtn.setDisabled(value.trim() === '');
 				})
 				.then(c => { c.inputEl.type = 'password'; })
-			);
-
-		const currentToken = (this.plugin.app.loadLocalStorage('toggl-api-token') as string | null) ?? '';
-
-		new Setting(containerEl)
-			.setName('Test connection')
-			.setDesc('Verify the API token by calling the Toggl /me endpoint.')
+			)
 			.addButton((btn: ButtonComponent) => {
 				testBtn = btn;
 				btn.setButtonText('Test')
@@ -85,6 +84,9 @@ export class TogglImportSettingTab extends PluginSettingTab {
 				})
 			);
 
+		// --- Formatting section ---
+		new Setting(containerEl).setName('Formatting').setHeading();
+
 		new Setting(containerEl)
 			.setName('Output format')
 			.addDropdown(drop => drop
@@ -102,6 +104,7 @@ export class TogglImportSettingTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName('Delimiter')
 			.setDesc('Character(s) used to separate columns in plain text output.')
+			.setDisabled(this.plugin.settings.outputFormat !== 'plaintext')
 			.addText(text => text
 				.setValue(this.plugin.settings.delimiter)
 				.setDisabled(this.plugin.settings.outputFormat !== 'plaintext')
@@ -117,6 +120,7 @@ export class TogglImportSettingTab extends PluginSettingTab {
 			// addText (wide): deliberately using text input rather than addTextArea —
 			// the single-line wide input (styled by quick task 260416-vuj) is preferred
 			// for template strings over a multi-line textarea.
+			.setDisabled(this.plugin.settings.outputFormat !== 'template')
 			.addText(text => text
 				.setPlaceholder('e.g. $description ($duration)')
 				.setValue(this.plugin.settings.templateString)
@@ -127,6 +131,7 @@ export class TogglImportSettingTab extends PluginSettingTab {
 				})
 			);
 
+		// --- Columns section ---
 		new Setting(containerEl).setName('Columns').setHeading();
 
 		const columns: Array<{ key: keyof TogglImportSettings['columns']; label: string }> = [
@@ -142,6 +147,7 @@ export class TogglImportSettingTab extends PluginSettingTab {
 		for (const col of columns) {
 			new Setting(containerEl)
 				.setName(col.label)
+				.setDisabled(isTemplate)
 				.addToggle(toggle => toggle
 					.setValue(this.plugin.settings.columns[col.key])
 					.setDisabled(isTemplate)
