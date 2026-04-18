@@ -73,10 +73,11 @@ None.
 | 260417-t1o | Settings UI always-show disabled fields, reorder sections, add README release instructions | 2026-04-17 | 00e6aee | [260417-t1o-settings-ui-always-show-disabled-fields-](./quick/260417-t1o-settings-ui-always-show-disabled-fields-/) |
 | 260417-t99 | day wrap time field should be short and right aligned | 2026-04-17 | c4441e4 | [260417-t99-day-wrap-time-field-should-be-short-and-](./quick/260417-t99-day-wrap-time-field-should-be-short-and-/) |
 | 260418-6dn | Group formatting configuration, section headings, inline test button, disabled rows greyed out | 2026-04-18 | b7a16c8 | [260418-6dn-group-formatting-configuration-and-add-a](./quick/260418-6dn-group-formatting-configuration-and-add-a/) |
+| 260418-763 | Review plugin guidelines and fix violations: inline styles to CSS class, sentence case command | 2026-04-18 | b48a1c2 | [260418-763-review-plugin-guidelines-and-verify-adheren](./quick/260418-763-review-plugin-guidelines-and-verify-adheren/) |
 
 ## Session Continuity
 
 Last activity: 2026-04-18
 Last session: 2026-04-18
-Stopped at: Completed quick task 260418-6dn
+Stopped at: Completed quick task 260418-763
 Resume with: `/gsd-next`
