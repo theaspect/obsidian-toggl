@@ -90,7 +90,7 @@ describe('Import Toggl Entries command', () => {
 		expect(mockAddCommand).toHaveBeenCalledOnce();
 		const spec = mockAddCommand.mock.calls[0][0];
 		expect(spec.id).toBe('import-toggl-entries');
-		expect(spec.name).toBe('Import Toggl Entries');
+		expect(spec.name).toBe('Import Toggl entries');
 		expect(typeof spec.editorCallback).toBe('function');
 	});
 
@@ -114,7 +114,7 @@ describe('Import Toggl Entries command', () => {
 		await editorCallback(editor);
 
 		expect(mockNotice).toHaveBeenCalledWith(
-			'Note filename must start with a valid date (expected: yyyy-mm-dd, e.g. 2026-01-15 or 2026-01-15 Daily Note).'
+			'Note filename must start with a valid date (expected: yyyy-mm-dd, e.g. 2026-01-15 or 2026-01-15 daily note).'
 		);
 		expect(mockFetchTimeEntries).not.toHaveBeenCalled();
 	});
@@ -127,7 +127,7 @@ describe('Import Toggl Entries command', () => {
 		await editorCallback(editor);
 
 		expect(mockNotice).toHaveBeenCalledWith(
-			'Note filename must start with a valid date (expected: yyyy-mm-dd, e.g. 2026-01-15 or 2026-01-15 Daily Note).'
+			'Note filename must start with a valid date (expected: yyyy-mm-dd, e.g. 2026-01-15 or 2026-01-15 daily note).'
 		);
 		expect(mockFetchTimeEntries).not.toHaveBeenCalled();
 	});
@@ -142,7 +142,7 @@ describe('Import Toggl Entries command', () => {
 		await editorCallback(editor);
 
 		expect(mockNotice).toHaveBeenCalledWith(
-			'Configure your Toggl API token in Settings \u2192 Toggl Import first.'
+			'Configure your Toggl API token in settings \u2192 Toggl import first.'
 		);
 		expect(mockFetchTimeEntries).not.toHaveBeenCalled();
 	});
@@ -216,7 +216,7 @@ describe('Import Toggl Entries command', () => {
 		await editorCallback(editor);
 
 		expect(mockNotice).toHaveBeenCalledWith(
-			'Note filename must start with a valid date (expected: yyyy-mm-dd, e.g. 2026-01-15 or 2026-01-15 Daily Note).'
+			'Note filename must start with a valid date (expected: yyyy-mm-dd, e.g. 2026-01-15 or 2026-01-15 daily note).'
 		);
 		expect(mockFetchTimeEntries).not.toHaveBeenCalled();
 	});

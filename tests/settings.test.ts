@@ -32,9 +32,10 @@ vi.mock('obsidian', () => {
 			const text = {
 				setPlaceholder: vi.fn().mockReturnThis(),
 				setValue: vi.fn().mockReturnThis(),
+				setDisabled: vi.fn().mockReturnThis(),
 				onChange: vi.fn().mockReturnThis(),
-				then: vi.fn().mockReturnThis(),
-				inputEl: { type: 'text' },
+				then: vi.fn((fn: (c: any) => void) => { fn(text); return text; }),
+				inputEl: { type: 'text', addClass: vi.fn() },
 			};
 			cb(text);
 			return this;
@@ -66,6 +67,7 @@ vi.mock('obsidian', () => {
 			cb(text);
 			return this;
 		}
+		setDisabled(_: boolean) { return this; }
 		addButton(cb: (b: any) => void) {
 			cb(fakeButton);
 			return this;
